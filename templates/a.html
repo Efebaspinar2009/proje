@@ -6,11 +6,9 @@
     <title>Document</title>
 </head>
 <body>
-    {{
-        isim 
-    }}
-    {{
-        x
-    }}
+    <form action="{{url_for('a')}}" method="post">
+        <input type="text" id = "durum" name="durum">
+        <button>Oluştur</button>
+    </form>
 </body>
 </html>
