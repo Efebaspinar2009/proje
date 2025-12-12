@@ -1,12 +1,114 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="../static/css/style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ormanın Kalbi - Büyülü Orman E-ticaret</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
 </head>
 <body>
-    
+  <div class="scene-particles" aria-hidden="true"></div>
+
+  <header class="header container">
+    <div class="brand">
+      <div class="logo"><img src="/static/img/logo.png" style="width:100%;height:100%;object-fit:cover;border-radius:12px"></div>
+      <h1>ORMANIN KALBİ</h1>
+    </div>
+    <nav class="nav">
+      <a class="btn" id="btn-login" href="/login">Giriş</a>
+      <a class="btn" id="btn-register" href="/register">Kayıt Ol</a>
+      <a class="btn" id="btn-market" href="/market">Market</a>
+      <a class="btn" id="btn-orders" href = "/siparis">Siparişler</a>
+      <a class="btn" id="btn-profile" href="/profil" >Profil</a>
+      <a class="btn btn--primary" id="btn-cart" href="/sepet">Sepet (0)</a>
+      <a class="btn" id="btn-logout" style="display:none" href = "/cikis">Çıkış Yap</a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="hero-left">
+        <h2>Ormanın Kalbine Hoşgeldiniz</h2>
+        <p>El yapımı mistik eşyalar, kristaller ve orman esintili dekoratif ürünler burada. Ürünlere göz at, hikayesine bak ve satın al.</p>
+        <div class="cta">
+          <button class="btn btn--primary" id="view-market">Alışverişe Başla</button>
+        </div>
+      </div>
+      <div class="hero-right card">
+        <div style="text-align:center;">
+          <h3 style="margin-bottom:6px">Günün Öne Çıkanı</h3>
+          <div class="thumb" style="height:120px;border-radius:10px">Ay Taşı Kolye</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MARKET -->
+    <section id="market" class="section card">
+      <h3>Market</h3>
+      <div class="products-grid" id="productsGrid">
+        <!-- Ürün örnekleri JS ile eklenecek -->
+      </div>
+    </section>
+
+    <!-- ORDERS -->
+    <section id="orders" class="section card" style="display:none">
+      <h3>Siparişlerim</h3>
+      <div id="ordersList">
+        <p style="color:var(--muted)">Henüz sipariş yok.</p>
+      </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section id="profile" class="section card" style="display:none">
+      <h3>Profil</h3>
+      <div class="profile-grid">
+        <div class="card">
+          <h4>Kullanıcı Bilgileri</h4>
+          <p>Ad: Ziyaretçi</p>
+          <p>E-posta: --</p>
+        </div>
+        <div class="card">
+          <h4>Hesap Ayarları</h4>
+          <p>Buraya profil düzenleme formları gelebilir.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ÜRÜN MODAL -->
+  <div class="product-modal" id="productModal" aria-hidden="true">
+    <div class="modal-card">
+      <div class="modal-left">
+        <div id="modalThumb" class="thumb" style="height:220px">Ürün</div>
+      </div>
+      <div class="modal-right">
+        <h3 id="modalTitle">Ürün Başlığı</h3>
+        <p id="modalDesc" style="color:var(--muted)">Ürün açıklaması burada yer alacak.</p>
+        <div class="price" id="modalPrice">₺0</div>
+
+        <div class="qty">
+          <label for="modalQty" style="color:var(--muted)">Adet:</label>
+          <input id="modalQty" class="input" type="number" value="1" min="1" style="width:80px" />
+        </div>
+
+        <div style="margin-top:14px;display:flex;gap:8px">
+          <button class="btn btn--primary" id="modalBuy">Satın Al</button>
+          <button class="btn" id="modalClose">Kapat</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- FOOTER -->
+  <footer class="footer">
+    <small>© 2025 Ormanın Kalbi — İletişim: info@ormankalbi.example</small>
+    <div>
+      <button class="btn">S.S.S</button>
+      <button class="btn">Destek</button>
+    </div>
+  </footer>
+
+
 </body>
 </html>
