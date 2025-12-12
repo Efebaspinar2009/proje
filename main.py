@@ -4,6 +4,7 @@ from sqlalchemy import Column , Integer , ForeignKey
 from datetime import datetime
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
+## form.get kullan
  
 app = Flask(__name__)
 
@@ -51,7 +52,7 @@ class Urunler(db.Model):
 @app.route("/")
 def index():
     return render_template("index.html")
-    return "giriş başarılı"
+
 
 
 @app.route("/x" , methods = ["GET" , "POST"])
@@ -65,6 +66,7 @@ def a():
         db.session.add(rafa)
         db.session.commit()
         return render_template("a.html")
+    
 #kayıt kısmı fronta uyarla
 @app.route("/register" , methods = ["GET" , "POST"])
 def register():
@@ -78,10 +80,12 @@ def register():
         try:
             db.session.add(yeni_kullanici)
             db.session.commit()
+            flash("kayıt başarılı" , "success")
+            return render_template("login.html")
             
         except:
-            db.session.rollback()
-            return "Veri tabanına veri eklenirken sorun oluştu"
+            flash("zaten eklisiniz lütfen kayıt olunuz" ,"danger")
+            return render_template("register.html")
         
     return render_template("register.html")
 
