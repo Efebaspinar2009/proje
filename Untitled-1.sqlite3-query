@@ -1,0 +1,19 @@
+-- database: ./[TUR] M4L3_world_information.db
+
+SELECT * FROM info;
+SELECT * FROM info ORDER BY population DESC LIMIT 1;
+
+SELECT continents.continent_name
+FROM capitals
+JOIN countries
+    ON capitals.country_id = countries.id
+JOIN continents
+    ON countries.continent_id = continents.id
+WHERE capitals.capital_name = 'Basseterre';
+
+SELECT country.country, info.density
+FROM info
+JOIN country ON info.country_id = country.country_id
+WHERE info.population > 10000000 AND info.area < 8000000
+ORDER BY info.density DESC
+LIMIT 1;
