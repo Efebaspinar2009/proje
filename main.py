@@ -1,11 +1,13 @@
 from flask import Flask , render_template , request , flash , redirect , url_for
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import Column , Integer , ForeignKey
+from sqlalchemy.exc import IntegrityError
 from datetime import datetime
 import os
-from werkzeug.security import generate_password_hash, check_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash 
 ## form.get kullan
  
+##https://stackoverflow.com/questions/20503183/python-flask-working-with-wraps incele
 app = Flask(__name__)
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
@@ -14,40 +16,66 @@ app.config['SECRET_KEY']  = "skgdgdhgjkhfdjkghkdjfhgkjdhg"
 
 db = SQLAlchemy(app)
 
-durumlar =  ["hazır" , "beklemede" , "hazırlanıyor" , "tamamlandı"]
 #databasa in oluşturması
 class Kullanici(db.Model):
-    id = db.Column(db.Integer , primary_key = True )
-    kullanici_adi = db.Column(db.String(50) , unique = True , nullable = False)
-    email = db.Column(db.String(50) , unique = True , nullable = False)
-    sifre = db.Column(db.String(20) , nullable = False)
-    money = db.Column(db.Integer)
+    __tablename__ = "kullanici"
+
+    id = db.Column(db.Integer, primary_key=True)
+    kullanici_adi = db.Column(db.String(50), unique=True, nullable=False)
+    email = db.Column(db.String(50), unique=True, nullable=False)
+    sifre = db.Column(db.String(255), nullable=False)
+    money = db.Column(db.Integer, default=0)
+
 
 class Durum(db.Model):
-    __tablename__ =  "durum"
-    durum  = db.Column(db.String(40))
-    id = db.Column(db.Integer ,  primary_key = True)
+    __tablename__ = "durum"
 
-class Siparis(db.Model):
-    __tablename__ = "sipariş"
-    sipariş_id = db.Column(db.String , primary_key = True)
-    kullanici_id = db.Column(db.Integer , ForeignKey("kullanici.id"))
-    durum_id = db.Column(db.Integer , ForeignKey("durum.id"))
-    tutar = db.Column(db.Integer)
-    tur = db.Column(db.String , ForeignKey("urun_turleri.id"))
+    id = db.Column(db.Integer, primary_key=True)
+    durum = db.Column(db.String(40), nullable=False)
 
-class Urun_turleri(db.Model):
+
+class UrunTurleri(db.Model):
     __tablename__ = "urun_turleri"
-    tur = db.Column(db.String)
-    id = db.Column(db. Integer , primary_key = True)
-    
+
+    id = db.Column(db.Integer, primary_key=True)
+    tur = db.Column(db.String(50), unique=True, nullable=False)
+
+
 class Urunler(db.Model):
     __tablename__ = "urunler"
-    urun_adi = db.Column(db.String)
-    tur = db.Column(db.String , ForeignKey("urun_turleri.id"))
-    id  = db.Column(db.Integer , primary_key = True)
-    fiyat = db.Column(db.Integer)
-    img = db.Column(db.String)
+
+    id = db.Column(db.Integer, primary_key=True)
+    urun_adi = db.Column(db.String(100), nullable=False)
+
+    tur_id = db.Column(
+        db.Integer,
+        db.ForeignKey("urun_turleri.id"),
+        nullable=False
+    )
+
+    fiyat = db.Column(db.Integer, nullable=False)
+    img = db.Column(db.String(255))
+    aciklama = db.Column(db.String(255))
+
+
+class Siparis(db.Model):
+    __tablename__ = "siparis"
+
+    id = db.Column(db.Integer, primary_key=True)
+
+    kullanici_id = db.Column(
+        db.Integer,
+        db.ForeignKey("kullanici.id"),
+        nullable=False
+    )
+
+    durum_id = db.Column(
+        db.Integer,
+        db.ForeignKey("durum.id"),
+        nullable=False
+    )
+
+    tutar = db.Column(db.Integer, nullable=False)
     
 @app.route("/")
 def index():
@@ -81,13 +109,18 @@ def register():
             db.session.add(yeni_kullanici)
             db.session.commit()
             flash("kayıt başarılı" , "success")
-            return render_template("login.html")
+            return redirect(url_for("login"))
             
-        except:
-            flash("zaten eklisiniz lütfen kayıt olunuz" ,"danger")
+        except IntegrityError:
+            flash("Bu kullanıcı adı veya e-posta zaten kayıtlı." ,"danger")
             return render_template("register.html")
+    
+        except:
+            flash("Bir hata var", "danger")
+            return render_template("register.html")
+
         
-    return render_template("register.html")
+    return render_template("register.html") 
 
 @app.route("/login" , methods = ["GET" , "POST"])
 def login():
@@ -105,23 +138,71 @@ def login():
             
             else:
                 flash("hatalı giriş." , "danger")
-            
-            
+                return render_template("login.html")
+                
         else:
             flash("kullanıcı adı veya e-posta bulunamadı" , "danger")
+            return render_template("login.html")
         
     return render_template("login.html")
 
-@app.route("/deneme")
-def deneme():
-    isim = "efe"
-    x = 10
-    return render_template("deneme.html" , isim = isim , x = x)
+@app.route("/market")
+def market():
+    return render_template("market.html")
 
+@app.route("/siparis")
+def siparis():
+    return render_template("orders.html")
+
+@app.route("/profile")
+def profile():
+    return render_template("profile.html")
+
+#çıkış ekle
+@app.route("/admin", methods=["GET", "POST"])
+def admin():
+    if request.method == "POST":
+        form_tipi = request.form.get("form_tipi")
+
+        try:
+            if form_tipi == "tur":
+                tur = request.form.get("tur")
+                yeni_tur = UrunTurleri(tur=tur)
+                db.session.add(yeni_tur)
+
+            elif form_tipi == "urun":
+                urun_adi = request.form.get("urun_adi")
+                urun_turu = request.form.get("urun_turu")
+                fiyat = request.form.get("fiyat")
+                img = request.form.get("img")
+                aciklama = request.form.get("aciklama")
+
+                tur = UrunTurleri.query.filter_by(tur=urun_turu).first()
+                if not tur:
+                    flash("Ürün türü bulunamadı")
+                    return redirect(url_for("admin"))
+
+                yeni_urun = Urunler(
+                    urun_adi=urun_adi,
+                    tur_id=tur.id,
+                    fiyat=fiyat,
+                    img=img,
+                    aciklama=aciklama
+                )
+
+                db.session.add(yeni_urun)
+
+            db.session.commit()
+            flash("Başarıyla eklendi")
+
+        except Exception as e:
+            db.session.rollback()
+            flash(f"Hata: {e}")
+
+    return render_template("admin.html")
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
 
     app.run(debug = True)
-
 

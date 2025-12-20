@@ -13,7 +13,7 @@
     <h2>Kayıt Ol</h2>
     <p style="color:var(--muted)">Hesap oluşturmak için bilgilerini gir.</p>
 
-    <form class="form">
+    <form class="form" method="post" action="{{url_for('register')}}">
         <div class="field">
             <label>İsim</label>
             <input type="text" class="input" name="ad" id="ad" required>

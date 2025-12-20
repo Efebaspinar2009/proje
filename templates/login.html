@@ -13,7 +13,7 @@
     <h2>Giriş Yap</h2>
     <p style="color:var(--muted)">Hesabına giriş yap.</p>
 
-    <form class="form">
+    <form class="form" method="post" action="{{url_for('login')}}">
         <div class="field">
             <label>E-posta</label>
             <input type="email" class="input" name="email" id="email" required>
