@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Giriş Yap</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+
+<div class="card" style="max-width:460px;margin:auto;margin-top:50px;">
+    <h2>Giriş Yap</h2>
+    <p style="color:var(--muted)">Hesabına giriş yap.</p>
+
+    <form class="form" method="post" action="{{url_for('login')}}">
+        <div class="field">
+            <label>E-posta</label>
+            <input type="email" class="input" name="email" id="email" required>
+        </div>
+
+        <div class="field">
+            <label>Şifre</label>
+            <input type="password" class="input" name="sifre" id="sifre" required>
+        </div>
+
+        <button class="btn btn--primary" style="width:100%;margin-top:12px">Giriş Yap</button>
+    </form>
+
+    <p style="margin-top:14px;color:var(--muted)">
+        Hesabın yok mu?
+        <a href="/register" style="color:var(--accent)">Kayıt Ol</a>
+    </p>
+    
+
+</div>
+
+</body>
+</html>

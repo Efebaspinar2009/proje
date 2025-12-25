@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Profil</title>
+
+    <link rel="stylesheet" href="../static/css/style.css">
+    <div class="scene-particles" aria-hidden="true"></div>
+
+  <header class="header container">
+    <div class="brand">
+      <div class="logo"><img src="/static/img/logo.png" style="width:100%;height:100%;object-fit:cover;border-radius:12px"></div>
+      <h1>ORMANIN KALBİ</h1>
+    </div>
+    <nav class="nav">
+      {% if session.get("user_id") %}
+          <span class="btn">👤 {{ session["username"] }}</span>
+      {% else %}
+          <a class="btn" href="/login">Giriş</a>
+          <a class="btn" href="/register">Kayıt Ol</a>
+      {% endif %}
+      <a class="btn" id="btn-market" href="/">Ana Sayfa</a>
+      <a class="btn" id="btn-market" href="/market">Market</a>
+      <a class="btn" id="btn-orders" href= "/siparis">Siparişler</a>
+      <a class="btn" id="btn-profile" href="/profile" >Profil</a>
+      {% if session.get("is_admin") %}
+        <a class="btn" href="/admin">Admin</a>
+      {% endif %}
+      <a class="btn btn--primary" id="btn-cart" href="/siparis">Sepet (0)</a>
+      {% if session.get("user_id") %}
+          <a class="btn" href="/cikis">Çıkış Yap</a>
+      {% endif %}
+    </nav>
+  </header>
+</head>
+
+<body>
+
+<h2 style="text-align:center;margin-top:20px;">Profil</h2>
+<div class="card">
+    <div class="card">
+        <h3>Kullanıcı Bilgileri</h3>
+        <p><strong>Ad:</strong> {{ user.kullanici_adi }}</p>
+        <p><strong>ID:</strong> {{ user.id }}</p>
+        <p><strong>Bakiye:</strong> ₺{{ user.money }}</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card" style="margin-bottom:20px;">
+        <h3>Yeni Ürün Ekle</h3>
+        <form method="post" action="{{ url_for('kullanici_urun_ekle') }}">
+            <input type="text" name="urun_adi" placeholder="Ürün adı">
+            <select name="urun_turu">
+                {% for tur in turler %}
+                    <option value="{{ tur.id }}">{{ tur.tur }}</option>
+                {% endfor %}
+            </select>
+            <input type="text" name="fiyat" placeholder="Fiyat">
+            <input type="text" name="img" placeholder="Resim">
+            <input type="text" name="aciklama" placeholder="Açıklama">
+            <button type="submit">Ürün ekle</button>
+        </form>
+    </div>
+
+    <div class="card">
+        <h3>Bakiye Yükle</h3>
+        <form method="POST" action="{{ url_for('para_yukle') }}">
+            <div class="field">
+                <label>Miktar (₺)</label>
+                <input type="number" name="miktar" min="1" required>
+            </div>
+            <div class="field">
+                <label>Kart Numarası</label>
+                <input type="text" name="kart_no" placeholder="1234 5678 9012 3456" required>
+            </div>
+            <div class="field">
+                <label>Son Kullanma Tarihi</label>
+                <input type="text" name="son_kullanim" placeholder="AA/YY" required>
+            </div>
+            <div class="field">
+                <label>CVC</label>
+                <input type="text" name="cvc" placeholder="123" required>
+            </div>
+            <button type="submit" class="btn btn--primary">Bakiye Yükle</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,361 @@
+/* ========================
+   Büyülü Orman Teması - style.css
+   (Tüm eski ve yeni geliştirmeler birleştirildi)
+======================== */
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;600;700&display=swap');
+
+:root {
+  --bg-1: #0b2a1a;
+  --bg-2: #092f2b;
+  --panel: rgba(255,255,255,0.04);
+  --card: rgba(255,255,255,0.04);
+  --glass: rgba(255,255,255,0.06);
+  --accent: #9be7c4;
+  --accent-2: #b89eff;
+  --gold: #f3d48f;
+  --muted: rgba(255,255,255,0.6);
+  --text: #e9f6f0;
+  --glow-green: 0 0 18px 2px #9be7c4, 0 0 40px 8px #b89eff55;
+  --glow-purple: 0 0 16px 2px #b89eff, 0 0 32px 6px #9be7c477;
+  --blur-bg: blur(12px);
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+  background:
+    radial-gradient(ellipse at 10% 10%, rgba(24,40,26,0.7), rgba(8,12,14,0.95)),
+    linear-gradient(180deg, var(--bg-1), var(--bg-2));
+  color: var(--text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-y: auto;
+  padding-bottom: 90px;
+}
+/* Hafif sis ve partiküller */
+.scene-particles {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: 0.55;
+  background-image:
+    radial-gradient(circle at 10% 20%, rgba(155,231,179,0.06) 0 1px, transparent 1px),
+    radial-gradient(circle at 80% 80%, rgba(184,158,255,0.035) 0 1px, transparent 1px);
+  background-size: 25px 25px, 40px 40px;
+  mix-blend-mode: screen;
+}
+.mist {
+  position: fixed; left: 0; top: 0; right: 0; bottom: 0; pointer-events: none; z-index: 0;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="%230b2a1a" stop-opacity="0"/><stop offset="1" stop-color="%23092f2b" stop-opacity="0.12"/></linearGradient></defs><rect width="100%" height="100%" fill="url(%23g)"/></svg>');
+  mix-blend-mode: screen; opacity: 0.7; animation: slowDrift 18s linear infinite;
+}
+@keyframes slowDrift { 0%{transform:translateX(-5%)} 50%{transform:translateX(5%)} 100%{transform:translateX(-5%)} }
+
+/* Header (Mistik Blur & Glow) */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 18px 28px;
+  margin-bottom: 28px;
+  background: linear-gradient(90deg, rgba(10,20,18,0.66) 60%, rgba(184,158,255,0.13));
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 2px 30px 0 rgba(155,231,196,0.05), 0 1px 30px 0 rgba(184,158,255,0.06);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  /* Glow effect */
+  box-shadow: 0 2px 40px 0 #b89eff22, 0 2px 30px 0 #9be7c422;
+}
+.brand {
+  display: flex; align-items: center; gap: 14px;
+}
+.logo {
+  width: 56px; height: 56px; border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 6px 18px rgba(0,0,0,0.6), 0 0 18px rgba(184,158,255,0.15) inset;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'DM Serif Display'; font-size: 22px; color: #07201a; font-weight: 700;
+}
+.brand h1 {
+  font-family: 'DM Serif Display'; font-size: 20px; letter-spacing: 0.6px;
+  text-shadow: 0 1px 10px #b89eff22;
+}
+.brand p { font-size: 12px; color: rgba(233,246,240,0.75); }
+.nav {
+  display: flex; gap: 12px; align-items: center;
+}
+.nav a, .btn {
+  color: var(--text);
+  text-decoration: none;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.06);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all .18s cubic-bezier(.51,.9,.33,1.25);
+  box-shadow: 0 1px 6px rgba(155,231,196,0.06);
+  position: relative;
+  overflow: hidden;
+}
+.btn:hover, .nav a:hover {
+  color: var(--accent);
+  background: linear-gradient(90deg, rgba(155,231,196,0.08), rgba(184,158,255,0.08));
+  box-shadow: 0 6px 24px rgba(155,231,179,0.10), 0 0 18px rgba(184,158,255,0.09), var(--glow-green);
+  transform: translateY(-4px) scale(1.035) rotate(-0.5deg);
+  border-color: var(--accent-2);
+}
+.btn:active, .nav a:active { transform: translateY(2px) scale(0.97);}
+.btn--primary {
+  background: linear-gradient(90deg, var(--accent) 60%, var(--accent-2) 100%);
+  color: #071019;
+  border: none;
+  font-weight: 700;
+  box-shadow: 0 8px 30px rgba(184,158,255,0.16), 0 0 0 2px #b89eff33, 0 0 10px 2px #9be7c477;
+  position: relative;
+  transition: box-shadow .22s cubic-bezier(.51,.9,.33,1.25), transform .18s;
+}
+.btn--primary:hover, .btn--primary:focus {
+  color: #071019;
+  background: linear-gradient(90deg, var(--accent-2) 20%, var(--accent) 100%);
+  box-shadow: 0 0 0 3px #b89eff55, 0 0 30px 10px #9be7c444, var(--glow-purple);
+  filter: brightness(1.10) saturate(1.1);
+  transform: translateY(-2px) scale(1.045);
+}
+
+/* Parıltı animasyonu */
+@keyframes shimmer { 0%{transform:translateX(-40%)} 100%{transform:translateX(140%)} }
+.shimmer { position: relative; overflow: hidden; }
+.shimmer::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.09), transparent);
+  transform: translateX(-40%);
+  animation: shimmer 2.8s linear infinite;
+  pointer-events: none;
+}
+
+/* Container & Layout */
+.container { max-width: 1100px; margin: 40px auto; padding: 24px; position: relative; z-index: 2; }
+.main { display: grid; grid-template-columns: 1fr 340px; gap: 28px; }
+.section-title { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.section-title h2 { font-size: 18px; }
+.section-title p { font-size: 12px; color: rgba(233,246,240,0.7);}
+.section { margin-top: 28px; background: transparent; }
+
+/* Kartlar */
+.card {
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 6px 24px rgba(3,6,4,0.6), 0 0 0 1px #b89eff33;
+  border: 1px solid rgba(255,255,255,0.03);
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+  transition: box-shadow .19s cubic-bezier(.51,.9,.33,1.25);
+}
+.card:hover {
+  box-shadow: 0 10px 40px 0 #b89eff33, 0 2px 30px 0 #9be7c433, 0 1px 40px 0 #b89eff22;
+  border-color: var(--accent-2);
+}
+
+/* Ürünler Grid */
+.products-grid, .products {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+  gap: 18px;
+}
+.product {
+  border-radius: 12px;
+  overflow: hidden;
+  padding: 16px 14px 18px 14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.03));
+  box-shadow: 0 1px 10px 0 #b89eff22;
+  position: relative;
+  min-height: 188px;
+  transition: transform .19s cubic-bezier(.51,.9,.33,1.25), box-shadow .18s cubic-bezier(.51,.9,.33,1.25), filter .18s;
+  filter: brightness(1) saturate(1);
+}
+.product .thumb {
+  height: 140px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #b89eff22, #9be7c411);
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; color: #fff;
+  margin-bottom: 6px;
+  box-shadow: 0 2px 16px 0 #b89eff18;
+}
+.product h3 { margin-top: 8px; font-size: 16px; }
+.price { font-weight: 700; color: var(--accent); margin-top: 8px; }
+.tag {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  background: rgba(255,255,255,0.04);
+  color: var(--muted);
+  margin-top: 6px;
+}
+.buy-row { display: flex; justify-content: space-between; align-items: center; margin-top: 14px; }
+
+/* Ürün kart hover: Güçlü efekt ve parıltı */
+.product:hover, .product:focus-within {
+  transform: translateY(-10px) scale(1.035) rotate(-0.6deg);
+  box-shadow: 0 18px 60px 0 #b89eff44, 0 2px 30px 0 #9be7c433, 0 1px 60px 0 #b89eff33;
+  filter: brightness(1.08) saturate(1.08);
+  border: 1.5px solid var(--accent-2);
+  outline: none;
+}
+.product:hover .thumb, .product:focus-within .thumb {
+  box-shadow: 0 0 24px 4px #b89eff88, 0 0 80px 12px #9be7c433;
+  filter: brightness(1.10) saturate(1.1);
+}
+.product:hover .price, .product:focus-within .price {
+  text-shadow: 0 0 10px #9be7c4cc, 0 0 32px #b89eff88;
+  color: var(--gold);
+}
+.product:hover .tag, .product:focus-within .tag {
+  background: linear-gradient(90deg, #b89eff33 0%, #9be7c433 100%);
+  color: #fff;
+  filter: brightness(1.15);
+}
+.product .btn--primary {
+  transition: box-shadow .18s, background .18s, color .18s;
+}
+.product:hover .btn--primary, .product:focus-within .btn--primary {
+  box-shadow: 0 0 0 3px #b89eff77, 0 0 18px 6px #9be7c455, 0 0 40px 14px #b89eff44;
+  background: linear-gradient(90deg, var(--accent-2) 30%, var(--accent) 100%);
+  color: #071019;
+  filter: brightness(1.15);
+}
+
+/* Modal / product detail */
+.product-modal {
+  position: fixed; inset: 0;
+  display: none; align-items: center; justify-content: center;
+  background: linear-gradient(180deg, rgba(2,6,4,0.6), rgba(2,6,4,0.75));
+  z-index: 120;
+}
+.product-modal .modal-card {
+  width: min(880px,94%);
+  background: rgba(20, 28, 25, 0.96) !important;
+  border-radius: 14px;
+  padding: 22px;
+  display: flex;
+  gap: 18px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.55);
+  backdrop-filter: blur(10px);
+}
+.modal-left { flex: 1; }
+.modal-right { width: 320px; }
+.qty { display: flex; gap: 8px; align-items: center; margin-top: 10px; }
+
+/* Formlar */
+.form { max-width: 420px; }
+.form .field { margin-bottom: 12px; position: relative; }
+.form label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 14px; }
+.form input {
+  width: 100%; padding: 12px;
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.04);
+  background: var(--glass);
+  color: inherit;
+  font-size: 15px;
+  transition: border-color .16s;
+}
+.form input:focus {
+  border-color: var(--accent-2);
+  outline: none;
+  box-shadow: 0 0 0 2px #b89eff44;
+}
+.toggle-pass {
+  position: absolute; right: 10px; top: 36px;
+  cursor: pointer; font-size: 14px; opacity: 0.7;
+}
+.input { padding: 10px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.04); background: transparent; color: inherit; }
+
+/* Sipariş & Profil */
+.order-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 12px; border-radius: 10px;
+  border: 1px solid rgba(255,255,255,0.03);
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+  margin-bottom: 6px;
+}
+.profile-grid {
+  display: grid; grid-template-columns: 280px 1fr; gap: 18px;
+}
+
+/* Footer (Mistik Blur & Glow) */
+.footer {
+  position: fixed; left: 0; right: 0; bottom: 0;
+  padding: 16px 28px;
+  background: linear-gradient(0deg, rgba(2,6,4,0.75), rgba(184,158,255,0.10));
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 0 32px 0 #b89eff22;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 100;
+}
+.footer small { color: var(--muted); }
+.footer .btn {
+  margin-left: 6px;
+}
+.footer .btn:hover {
+  background: linear-gradient(90deg, #b89eff33, #9be7c433);
+  color: #fff;
+  box-shadow: 0 0 0 2px #b89eff55, 0 0 18px 6px #9be7c455;
+}
+
+/* Diğer yardımcı stiller */
+.row { display: flex; gap: 12px; align-items: center; }
+.center { text-align: center; }
+.icon-circle {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: rgba(255,255,255,0.03);
+}
+.leaf-decor {
+  position: absolute; right: -40px; top: -40px; opacity: 0.18;
+  transform: rotate(-20deg); filter: blur(1px);
+}
+
+/* Küçük cihazlar */
+@media (max-width: 900px) {
+  .main { grid-template-columns: 1fr; }
+  .products-grid, .products { grid-template-columns: repeat(2,1fr); }
+  .profile-grid { grid-template-columns: 1fr; }
+  .header { flex-direction: column; gap: 12px; }
+}
+@media (max-width: 600px) {
+  .products-grid, .products { grid-template-columns: 1fr; }
+  .container { padding: 7vw 2vw; }
+  .footer { flex-direction: column; gap: 8px; padding: 14px 6vw; }
+}
+
+/* Modal */
+.modal, .product-modal {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(2,4,3,0.65);
+  backdrop-filter: blur(10px);
+  z-index: 1000;
+  padding: 20px;
+  opacity: 0; pointer-events: none; transition: all .25s ease;
+}
+.modal.show, .product-modal.show { opacity: 1; pointer-events: auto; }
+.modal .box, .product-modal .modal-card {
+  width: 840px; max-width: 96%;
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border-radius: 14px; padding: 18px; display: flex; gap: 18px;
+}
+
+
+.modal .left, .modal-left { flex: 1; }
+.modal .right, .modal-right { width: 320px; }
+
+/* End of File */

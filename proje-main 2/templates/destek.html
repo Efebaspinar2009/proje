@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <title>Destek</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+
+<body>
+<header class="header container">
+  <div class="brand">
+    <div class="logo"><img src="/static/img/logo.png" style="width:100%;height:100%;object-fit:cover;border-radius:12px"></div>
+    <h1>ORMANIN KALBİ</h1>
+  </div>
+  <nav class="nav">
+    <a class="btn" href="/">Ana Sayfa</a>
+    <a class="btn" href="/market">Market</a>
+    <a class="btn" id="btn-orders" href= "/siparis">Siparişler</a>
+    <a class="btn" href="/profile">Profil</a>
+    {% if session.get("is_admin") %}
+      <a class="btn" href="/admin">Admin</a>
+    {% endif %}
+    <a class="btn btn--primary" id="btn-cart" href="/siparis">Sepet ({{ session.get('cart_count', 0) }})</a>
+
+  </nav>
+</header>
+
+<div class="container">
+  <div class="card">
+    <h2>Destek</h2>
+    <p>Bir sorun mu yaşıyorsun? Aşağıdan bize yazabilirsin.</p>
+
+    <form method="post" action="{{ url_for('destek') }}">
+  <div class="field">
+    <label>E-posta</label>
+    <input class="input" type="email" name="email" placeholder="E-posta adresin" required>
+  </div>
+
+  <div class="field">
+    <label>Konu</label>
+    <input class="input" type="text" name="konu" placeholder="Konu" required>
+  </div>
+
+  <div class="field">
+    <label>Mesaj</label>
+    <textarea class="input" name="mesaj" rows="4" placeholder="Mesajın" required></textarea>
+  </div>
+
+  <button type="submit" class="btn btn--primary">Gönder</button>
+</form>
+  </div>
+</div>
+
+<footer class="footer">
+  <small>© 2025 Ormanın Kalbi — info@ormankalbi.example</small>
+</footer>
+</body>
+</html>

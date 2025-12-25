@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <title>Siparişler</title>
+
+    <link rel="stylesheet" href="/static/css/style.css">
+    <div class="scene-particles" aria-hidden="true"></div>
+
+  <header class="header container">
+    <div class="brand">
+      <div class="logo"><img src="/static/img/logo.png" style="width:100%;height:100%;object-fit:cover;border-radius:12px"></div>
+      <h1>ORMANIN KALBİ</h1>
+    </div>
+    <nav class="nav">
+      {% if session.get("user_id") %}
+          <span class="btn">👤 {{ session["username"] }}</span>
+      {% else %}
+          <a class="btn" href="/login">Giriş</a>
+          <a class="btn" href="/register">Kayıt Ol</a>
+      {% endif %}
+      <a class="btn" id="btn-market" href="/">Ana Sayfa</a>
+      <a class="btn" id="btn-market" href="/market">Market</a>
+      <a class="btn" id="btn-orders" href= "/siparis">Siparişler</a>
+      <a class="btn" id="btn-profile" href="/profile" >Profil</a>
+      <a class="btn btn--primary" id="btn-cart" href="/siparis">Sepet (0)</a>
+      {% if session.get("user_id") %}
+          <a class="btn" href="/cikis">Çıkış Yap</a>
+      {% endif %}
+    </nav>
+  </header>
+</head>
+
+<body>
+
+
+
+<h2 style="text-align:center;margin-top:20px;">Sepetim</h2>
+
+<div class="card">
+    {% for detay in siparis_detay %}
+    <div class="order-item">
+        <div>
+            <strong>{{ detay.urun.urun_adi }}</strong>
+            <div style="color:var(--muted);font-size:13px">{{ detay.miktar }} adet</div>
+        </div>
+        <div>
+            <strong>₺{{ detay.urun.fiyat * detay.miktar }}</strong>
+        </div>
+    </div>
+    {% endfor %}
+    <hr>
+    <div>
+        <strong>Toplam: ₺{{ siparis.tutar }}</strong>
+    </div>
+    <form method="POST" action="{{ url_for('siparis_onayla') }}">
+        <button type="submit" class="btn btn--primary">Siparişi Onayla</button>
+    </form>
+</div>
+
+<footer class="footer">
+    <small>© 2025 Ormanın Kalbi — İletişim: info@ormankalbi.example</small>
+    <div>
+      <a class="btn" href="/sıkça_sorulan_sorular">S.S.S</a>
+      <a class="btn" href="/destek">Destek</a>
+    </div>
+  </footer>
+</body>
+</html>

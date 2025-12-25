@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <div class="scene-particles" aria-hidden="true"></div>
+
+    <header class="header container">
+    <div class="brand">
+      <div class="logo"><img src="/static/img/logo.png" style="width:100%;height:100%;object-fit:cover;border-radius:12px"></div>
+      <h1>ORMANIN KALBİ</h1>
+    </div>
+    <nav class="nav">
+      {% if session.get("user_id") %}
+          <span class="btn">👤 {{ session["username"] }}</span>
+      {% else %}
+          <a class="btn" href="/login">Giriş</a>
+          <a class="btn" href="/register">Kayıt Ol</a>
+      {% endif %}
+      <a class="btn" id="btn-market" href="/market">Market</a>
+      <a class="btn" id="btn-orders" href= "/orders">Siparişler</a>
+      <a class="btn" id="btn-profile" href="/profile" >Profil</a>
+      {% if session.get("is_admin") %}
+        <a class="btn" href="/admin">Admin</a>
+      {% endif %}
+      <a class="btn btn--primary" id="btn-cart" href="/siparis">Sepet ({{ session.get('cart_count', 0) }})</a>
+      <a class="btn" id="btn-logout" style="display:none" href="/cikis">Çıkış Yap</a>
+    </nav>
+  </header>
+
+</head>
+<body>
+    <div>
+        <form method="post">
+            <input type="hidden" name="form_tipi" value="tur">
+            <select name="urun_turu" required>
+            {% for t in turler %}
+            <option value="{{ t.id }}">{{ t.tur }}</option>
+            {% endfor %}
+</select>
+            <button type="submit">Tür ekle</button>
+        </form>
+
+        <form method="post">
+        <input type="hidden" name="form_tipi" value="urun">
+        <input type="text" name="urun_adi" placeholder="Ürün adı">
+        <input type="text" name="urun_turu" placeholder="Ürün türü">
+        <input type="text" name="fiyat" placeholder="Fiyat">
+        <input type="text" name="img" placeholder="Resim">
+        <input type="text" name="aciklama" placeholder="aciklama">
+        <button type="submit">Ürün ekle</button>
+
+    <h2>Mevcut Ürünler</h2>
+
+<table style="width:100%;margin-top:20px">
+  <tr>
+    <th>ID</th>
+    <th>Ürün</th>
+    <th>Tür</th>
+    <th>Fiyat</th>
+    <th>İşlem</th>
+  </tr>
+
+  {% for u in urunler %}
+  <tr>
+    <td>{{ u.id }}</td>
+    <td>{{ u.urun_adi }}</td>
+    <td>{{ u.tur }}</td>
+    <td>₺{{ u.fiyat }}</td>
+    <td>
+      <form method="post" action="{{ url_for('urun_sil', id=u.id) }}">
+        <button class="btn" style="background:#c0392b">Sil</button>
+      </form>
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+</form>
+    </div>
+</body>
+</html>
